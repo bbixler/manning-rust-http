@@ -1,7 +1,7 @@
-use std::net::SocketAddr;
 use hyper::server::conn::Http;
 use hyper::service::service_fn;
 use hyper::{Body, Method, Request, Response, StatusCode};
+use std::net::SocketAddr;
 use tokio::net::TcpListener;
 
 /// This is our service handler. It receives a Request, routes on its
@@ -15,6 +15,14 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, hyper::Err
 
         // Simply echo the body back to the client.
         (&Method::POST, "/echo") => Ok(Response::new(req.into_body())),
+
+        // Prefix the response with "You said: and then parrot back what was passed"
+        
+        (&Method::POST, "/parrot") => {
+            let bytes = hyper::body::to_bytes(req.into_body()).await?;
+            let response = String::from_utf8(bytes.into_iter().collect()).expect("Expected a string in the body");
+            Ok(Response::new(Body::from(format!("You said: {:?}", response))))
+        }
 
         (&Method::POST, "/echo/reversed") => {
             let whole_body = hyper::body::to_bytes(req.into_body()).await?;
@@ -42,7 +50,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let (stream, _) = listener.accept().await?;
 
         tokio::task::spawn(async move {
-            if let Err(err) = Http::new().serve_connection(stream, service_fn(handle_request)).await {
+            if let Err(err) = Http::new()
+                .serve_connection(stream, service_fn(handle_request))
+                .await
+            {
                 println!("Error serving connection: {:?}", err);
             }
         });
