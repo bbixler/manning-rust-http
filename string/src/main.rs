@@ -1,6 +1,5 @@
 fn main() {
-
-  let art : &str = r#"
+    let art: &str = r#"
  █     █░ ▄▄▄        ██████  ███▄ ▄███▓▓█████ ▓█████▄   ▄████ ▓█████ 
 ▓█░ █ ░█░▒████▄    ▒██    ▒ ▓██▒▀█▀ ██▒▓█   ▀ ▒██▀ ██▌ ██▒ ▀█▒▓█   ▀ 
 ▒█░ █ ░█ ▒██  ▀█▄  ░ ▓██▄   ▓██    ▓██░▒███   ░██   █▌▒██░▄▄▄░▒███   
@@ -12,13 +11,13 @@ fn main() {
     ░          ░  ░      ░         ░      ░  ░   ░          ░    ░  ░
                                                ░                     
   "#;
-  println!("{}", art);
+    println!("{}", art);
 
-  let hello : &str = "Hello WasmEdge!";
-  let mut howdy : String = hello.replace("Hello", "Howdy");
-  println!("{}", hello);
-  println!("{}", howdy);
-  
-  howdy.push_str(" -- from Texas");
-  println!("{}", howdy);
+    let hello: &str = "Hello WasmEdge!";
+    let mut howdy: String = hello.replace("Hello", "Howdy");
+    println!("{}", hello);
+    println!("{}", howdy);
+
+    howdy.push_str(" -- from Texas");
+    println!("{}", howdy);
 }
